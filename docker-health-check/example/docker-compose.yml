@@ -1,0 +1,117 @@
+name: docker-health-check
+
+services:
+  docker-health-check:
+    container_name: docker-health-check
+    image: rcolfin/docker-health-check:latest
+    pull_policy: always
+    restart: unless-stopped
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    command:
+      - --interval
+      - "30"
+      - --label
+      - "com.dockerhealthcheck.enable=true"
+      - "--no-restart"
+
+    environment:
+      TZ: "${TZ}"
+      HOSTNAME: "${HOSTNAME}"
+      # EMAIL__SENDER: "${EMAIL_FROM}"
+      # EMAIL__TO: "${EMAIL_TO}"
+      EMAIL__HOST: "${EMAIL_SERVER}"
+      EMAIL__PORT: "${EMAIL_SERVER_PORT}"
+      EMAIL__AUTH__USER: "${EMAIL_SERVER_USER}"
+      EMAIL__AUTH__PASSWORD: "${EMAIL_SERVER_PASSWORD}"
+
+  busybox:
+    # Sample service that alternates between healthy and unhealthy:
+    container_name: busybox-example-health-check
+    image: busybox
+    pull_policy: always
+    restart: unless-stopped
+
+    labels:
+      - "com.dockerhealthcheck.enable=true"
+
+    environment:
+      RESULTS_FILE: /tmp/results.txt
+      SLEEP_INTERVAL: 15s
+
+    healthcheck:
+      test: >
+        sh -c '
+          set -euo pipefail
+          [ "$(cat "$${RESULTS_FILE}")" == "0" ]
+        '
+      interval: 5s
+      timeout: 1s
+      retries: 0
+      start_period: 1s
+
+    deploy:
+      resources:
+        limits:
+          memory: 6MB
+
+    entrypoint: >
+      sh -c '
+          set -euo pipefail
+          function log() {
+              >&2 echo "$$(date "+%Y-%m-%d %H:%M:%S") $${*}"
+          }
+
+          function toggle_status() {
+            local STATUS
+            STATUS="0"
+            if [ -f "$${RESULTS_FILE}" ]; then
+              STATUS="$(cat "$${RESULTS_FILE}")"
+              if [ "$${STATUS}" == "0" ]; then
+                STATUS="1"
+              else
+                STATUS="0"
+              fi
+            fi
+
+            log "Writing $${STATUS} to $${RESULTS_FILE}"
+            echo "$${STATUS}" > "$${RESULTS_FILE}"
+          }
+
+          while :
+            do
+            toggle_status
+              log "Sleeping for $${SLEEP_INTERVAL}"
+              sleep $${SLEEP_INTERVAL} & wait $${!}
+            done
+      '
+
+  crashloop:
+    # Sample service that causes the OOM Killer to kill it:
+    # docker container inspect busybox-oom-example-health-check | jq .[].State.OOMKilled
+    container_name: busybox-oom-example-health-check
+    image: busybox
+    pull_policy: always
+    restart: unless-stopped
+
+    labels:
+      - "com.dockerhealthcheck.enable=true"
+
+    entrypoint: >
+      sh -c '
+          i=0
+
+          # Allocate memory by writing to files in shared memory
+          while true; do
+              dd if=/dev/zero of=/dev/shm/file_$i bs=1M count=10 &>/dev/null
+              i=$((i + 1))
+              sleep 0.1
+          done
+      '
+
+    deploy:
+      resources:
+        limits:
+          memory: 6MB
