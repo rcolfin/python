@@ -1,0 +1,27 @@
+name: docker-health-check
+
+services:
+  docker-health-check:
+    image: rcolfin/metelsoft:docker-health-check
+    container_name: docker-health-check
+    pull_policy: always
+    restart: unless-stopped
+
+    build:
+      context: ../..
+      dockerfile: docker-health-check/docker/Dockerfile
+      tags:
+        - rcolfin/metelsoft:docker-health-check
+        - rcolfin/metelsoft:docker-health-check${TAG:+-${TAG}}
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    command:
+      - --interval
+      - "30"
+      - --label
+      - "com.dockerhealthcheck.enable=true"
+
+    environment:
+      HOSTNAME: "${HOSTNAME}"
