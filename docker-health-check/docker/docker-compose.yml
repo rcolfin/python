@@ -1,0 +1,24 @@
+name: docker-health-check
+
+services:
+  docker-health-check:
+    image: rcolfin/docker-health-check:latest
+    container_name: docker-health-check
+    pull_policy: always
+    restart: unless-stopped
+
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    command:
+      - --interval
+      - "30"
+      - --label
+      - "com.dockerhealthcheck.enable=true"
+
+    environment:
+      HOSTNAME: "${HOSTNAME}"
