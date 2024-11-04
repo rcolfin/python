@@ -7,10 +7,3 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "github action updates"
-
-  - package-ecosystem: pip
-    directory: "/"
-    schedule:
-      interval: "monthly"
-    commit-message:
-      prefix: "pip updates"
