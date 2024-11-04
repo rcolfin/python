@@ -14,13 +14,38 @@ on:
 
 env:
   REPOSITORY: rcolfin
-  PROJECT: docker-health-check
 
 jobs:
-  build:
-
+  setup:
+    if: github.event_name == 'release' && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
-    if: github.event_name == 'release'
+    outputs:
+      dirs: ${{ steps.matrix.outputs.dirs }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Get the list of Python Directories
+        id: matrix
+        run: |
+          set -euo pipefail
+          dirs=$( find -mindepth 3 -maxdepth 3 -type f -name 'Dockerfile' -printf '%h\n' | xargs dirname | cut -d/ -f2- | sort | tr "\n" " " | awk '{$1=$1};1')
+          dirs=$(jq -n --indent 0 --arg dirs "$dirs" '$dirs | split(" ")')
+          echo "dirs=$dirs" >> $GITHUB_OUTPUT
+
+      - run: |
+          echo "dirs=${{ steps.matrix.outputs.dirs }}"
+
+  build:
+    needs: [ setup ]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && startsWith(github.ref, 'refs/tags/v')
+
+    strategy:
+      fail-fast: false
+      matrix:
+        dirs: ${{ fromJSON(needs.setup.outputs.dirs) }}
 
     steps:
     - name: Check out repository
@@ -32,20 +57,27 @@ jobs:
         username: "${{ secrets.DOCKERHUB_USERNAME }}"
         password: "${{ secrets.DOCKERHUB_TOKEN }}"
 
-    - name: Set env
+    - name: Set output
+      id: vars
       run: |
-          TAG="$(date +%s)"
-          echo "TAG=$TAG" >> $GITHUB_ENV
+          TAG=${GITHUB_REF#refs/*/v}"  # refs/tags/v1.2.3 -> 1.2.3
+          echo "TAG=$TAG" >> $GITHUB_OUTPUT
 
     - name: Build the Docker image
       run: |
-        set -euo pipefail
-        docker build . --pull --file docker/Dockerfile --tag "${{ env.REPOSITORY }}/${{ env.PROJECT }}:${{ env.TAG }}" --tag "${{ env.REPOSITORY }}/${{ env.PROJECT }}:latest"
-      working-directory: ${{ env.PROJECT }}
+        set -euox pipefail
+        PROJECT=$(echo "$(basename $PWD)")
+        docker build . --pull --file docker/Dockerfile --tag "${{ env.REPOSITORY }}/${PROJECT}:${TAG}" --tag "${{ env.REPOSITORY }}/${PROJECT}:latest"
+      working-directory: ${{ matrix.dirs }}
+      env:
+        TAG: ${{ steps.vars.outputs.TAG }}
 
     - name: Publish the Docker image
       run: |
-        set -euo pipefail
-        docker push "${{ env.REPOSITORY }}/${{ env.PROJECT }}:${{ env.TAG }}"
-        docker push "${{ env.REPOSITORY }}/${{ env.PROJECT }}:latest"
-      working-directory: ${{ env.PROJECT }}
+        set -euox pipefail
+        PROJECT=$(echo "$(basename $PWD)")
+        docker push "${{ env.REPOSITORY }}/${PROJECT}:${TAG}"
+        docker push "${{ env.REPOSITORY }}/${PROJECT}:latest"
+      working-directory: ${{ matrix.dirs }}
+      env:
+        TAG: ${{ steps.vars.outputs.TAG }}
