@@ -4,6 +4,12 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  checks: write
+  id-token: write
+  pull-requests: write
+
 on:
   schedule:
     # * is a special character in YAML so you have to quote this string
@@ -13,6 +19,8 @@ on:
     paths:
       - '.github/workflows/ci.yml'
       - './**'
+    tags-ignore:
+      - '*'  # Ignores all tags
 
   pull_request:
     paths:

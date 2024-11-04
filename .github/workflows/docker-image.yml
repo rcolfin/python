@@ -1,5 +1,11 @@
 name: Publish Docker Image
 
+permissions:
+  contents: read
+  checks: write
+  id-token: write
+  pull-requests: write
+
 on:
   release:
     types: [created]
