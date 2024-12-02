@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "name": "Python Debugger: Python File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}"
+        },
+        {
+            "name": "Python Module: Python File",
+            "type": "python",
+            "request": "launch",
+            "pythonPath": "/home/rcolfin/.cache/pypoetry/virtualenvs/contact-reminder-l4BVfvv3-py3.13/bin/python",
+            "module": "contact_messenger_bot",
+            "cwd": "${workspaceFolder}/contact-messenger-bot",
+            "args": ["list-contacts"],
+            "justMyCode": false
+        }
+    ]
+}

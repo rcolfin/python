@@ -8,8 +8,8 @@ services:
     restart: unless-stopped
 
     build:
-      context: ..
-      dockerfile: docker/Dockerfile
+      context: ../..
+      dockerfile: docker-health-check/docker/Dockerfile
       tags:
         - rcolfin/metelsoft:docker-health-check
         - rcolfin/metelsoft:docker-health-check${TAG:+-${TAG}}

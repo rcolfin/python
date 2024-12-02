@@ -12,7 +12,7 @@ import requests
 from tabulate import tabulate
 
 from docker.client import DockerClient
-from docker_health_check import constants, utils
+from docker_health_check import __version__, constants, utils
 from docker_health_check.models import ContainerRow
 from docker_health_check.notifications import NotificationHub
 
@@ -44,7 +44,7 @@ async def health_check(interval: float, labels: Sequence[str], restart: bool) ->
         labels = sorted(labels)
         filters = {"label": labels}
 
-    logger.info("Health Check is running")
+    logger.info("Health Check v%s is running", __version__)
     if filters:
         logger.info("Filtering by %s", filters)
 
