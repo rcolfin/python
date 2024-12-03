@@ -1,10 +1,17 @@
-FROM mambaorg/micromamba:alpine AS build
+ARG PLATFORM="linux/amd64"
 
-USER root
-
-WORKDIR /root
+FROM --platform=${PLATFORM} mambaorg/micromamba:alpine AS build
 
 ARG PACKAGES="python=3.13 pip poetry"
+
+ARG PACKAGE="docker-health-check"
+
+ARG APPDIR="/application"
+
+# Need to run as root:
+USER "root"
+
+# Setup micromamba and poetry
 
 ENV \
     PATH=$PATH:/opt/conda/bin/ \
@@ -26,19 +33,29 @@ ENV \
     MAMBA_SKIP_ACTIVATE=1 \
     POETRY_CACHE_DIR='/var/cache/pypoetry'
 
-# Install Dependencies:
-COPY poetry.lock pyproject.toml ./
-
 RUN \
-    poetry install --no-interaction --no-cache --no-directory --no-root --sync --only main
+    mkdir -p "${POETRY_CACHE_DIR}" \
+    && chmod gua+rwxs "${POETRY_CACHE_DIR}"
+
+USER "${MAMBA_USER}"
 
 # Install Package:
-COPY . ./src/
+WORKDIR "${APPDIR}"
+COPY . ./
+
+WORKDIR "${APPDIR}/${PACKAGE}"
 
 RUN \
-    poetry run pip install --no-deps --no-cache-dir ./src \
-    && rm -rf .cache/pip \
-    && rm -rf ./src
+    poetry install --no-interaction --no-cache --no-root \
+    && rm -rf ${POETRY_CACHE_DIR}/* \
+    && poetry run pip install --no-deps --no-cache-dir . \
+    && find -not -name 'pyproject.toml' -not -name 'poetry.lock' -delete \
+    && find -type d -empty -delete \
+    && rm -rf ~/.cache/pip \
+    && rm -rf ~/.local
+
+RUN \
+    echo "/opt/conda/bin/poetry shell -C ${APPDIR}/${PACKAGE}" >> ~/.bashrc
 
 ENTRYPOINT ["poetry", "run", "python", "-m", "docker_health_check", "health-check"]
 
