@@ -20,7 +20,7 @@ RUN \
 COPY pyproject.toml poetry.lock ./docker/nodemanager/python-wrapper ./
 
 RUN \
-    poetry install --no-interaction --no-cache --no-directory --no-root --sync --only main
+    poetry install --no-interaction --no-cache --no-directory --no-root --quiet --sync --only main
 
 FROM bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8 AS runtime
 

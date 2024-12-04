@@ -46,9 +46,9 @@ COPY . ./
 WORKDIR "${APPDIR}/${PACKAGE}"
 
 RUN \
-    poetry install --no-interaction --no-cache --no-root \
+    poetry install --no-interaction --no-cache --no-root --quiet \
     && rm -rf ${POETRY_CACHE_DIR}/* \
-    && poetry run pip install --no-deps --no-cache-dir . \
+    && poetry run pip install --no-deps --no-cache-dir --quiet . \
     && find -not -name 'pyproject.toml' -not -name 'poetry.lock' -delete \
     && find -type d -empty -delete \
     && rm -rf ~/.cache/pip \
