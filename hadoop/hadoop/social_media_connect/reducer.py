@@ -25,7 +25,7 @@ def reducer(lines: Iterable[str]) -> Iterable[tuple[str, tuple[str, ...]]]:
 
 def main(lines: Iterable[str]) -> None:
     for user, suggestions in reducer(lines):
-        print(f'{user}\t{",".join(suggestions)}')  # noqa: T201
+        print(f"{user}\t{','.join(suggestions)}")  # noqa: T201
 
 
 if __name__ == "__main__":

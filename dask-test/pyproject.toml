@@ -2,20 +2,8 @@
 name = "dask-test"
 version = "0.1.0"
 description = ""
-authors = ["Robert Colfin <robert.colfin@gmail.com>"]
+authors = ["Robert Colfin <robert.m.colfin@gmail.com>"]
 readme = "README.md"
-license = "Apache"
-classifiers = [
-    "Development Status :: 4 - Beta",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: Apache Software License",
-    "Natural Language :: English",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -24,7 +12,7 @@ distributed = "^2024.8.2"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.11.2"
-ruff = "^0.8.4"
+ruff = "^0.9.0"
 pytest = "^8.3.3"
 pytest-cov = "^6.0.0"
 pytest-ruff = "^0.4.1"
