@@ -41,12 +41,12 @@ def mapper(lines: Iterable[str]) -> Iterable[tuple[str, str]]:
     for frdlst in mapping.values():
         for users in itertools.combinations(frdlst, 2):
             t = _sort_tuple(users)
-            v1 = cast(tuple[str, str], (t[0], t[1]))
+            v1 = cast("tuple[str, str]", (t[0], t[1]))
             if v1 in distinct:
                 continue
 
             distinct.add(v1)
-            v2 = cast(tuple[str, str], (t[1], t[0]))
+            v2 = cast("tuple[str, str]", (t[1], t[0]))
             yield v1
             yield v2
 

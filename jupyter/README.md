@@ -4,14 +4,14 @@ Test area for Python
 
 ## Development
 
-# Setup Python Environment:
+### Setup Python Environment:
 
-Run [scripts/console.sh](../scripts/console.sh) poetry install
+Run [scripts/console.sh](scripts/console.sh)
 
-## If you need to relock:
+### If you need to relock:
 
 Run [scripts/lock.sh](../scripts/lock.sh)
 
-# Run code
+### Run code
 
 Run [jupyter](jupyter)

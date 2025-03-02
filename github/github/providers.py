@@ -111,7 +111,7 @@ class Application(TokenProvider, HttpClient):
         if isinstance(encrypted, bytes):
             return encrypted.decode("utf-8")
 
-        return cast(str, encrypted)
+        return cast("str", encrypted)
 
     async def _query_access_token(self) -> tuple[str, int]:
         assert self._installation_id is not None, "installation_id is not set"
@@ -124,7 +124,7 @@ class Application(TokenProvider, HttpClient):
         )
 
         async for response in responses:
-            token = cast(str, response["token"])
+            token = cast("str", response["token"])
             exp = int(time.time() + self._expiration.total_seconds() - self.EXPIRATION_OFFSET.total_seconds())
             return token, exp
 

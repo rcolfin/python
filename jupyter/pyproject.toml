@@ -1,10 +1,12 @@
-[tool.poetry]
+[project]
 name = "jupyter-env"
 version = "0.1.0"
 description = ""
-authors = ["Robert Colfin <robert.colfin@gmail.com>"]
+authors = [
+    {name = "Robert Colfin", email = "robert.colfin@gmail.com"},
+]
 readme = "README.md"
-license = "Apache"
+license = {text = "Apache"}
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -16,19 +18,22 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
+requires-python = "<4.0,>=3.12"
+dependencies = [
+    "jupyter<2.0.0,>=1.1.1",
+    "pandas<3.0.0,>=2.2.2",
+]
 
-[tool.poetry.dependencies]
-python = "^3.12"
-jupyter = "^1.1.1"
-pandas = "^2.2.2"
+[dependency-groups]
+dev = [
+    "mypy<2.0.0,>=1.11.2",
+    "ruff<1.0.0,>=0.9.0",
+    "pytest<9.0.0,>=8.3.3",
+    "pytest-cov<7.0.0,>=6.0.0",
+    "pytest-ruff<1.0.0,>=0.4.1",
+    "pytest-mypy<1.0.0,>=0.10.3",
+]
 
-[tool.poetry.group.dev.dependencies]
-mypy = "^1.11.2"
-ruff = "^0.9.0"
-pytest = "^8.3.3"
-pytest-cov = "^6.0.0"
-pytest-ruff = "^0.4.1"
-pytest-mypy = "^0.10.3"
 
 [tool.pytest.ini_options]
 addopts = "--doctest-modules --mypy --ruff --ruff-format"
@@ -145,5 +150,5 @@ line-ending = "auto"
 force-single-line = false
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"

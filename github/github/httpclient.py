@@ -47,7 +47,7 @@ class HttpClient:
         next_url: str | None = url
         while next_url:
             async with self._make_request(method, next_url, headers, params=params) as response:
-                yield cast(dict[str, Any], await response.json())
+                yield cast("dict[str, Any]", await response.json())
                 next_url = self._get_next_pagination_link(response)
 
     @staticmethod

@@ -2,28 +2,30 @@
 
 Iterates over Docker containers and if a container is unhealthy restarts it.
 
-# Development
+## Development
 
-# Setup Python Environment:
+### Setup Python Environment:
 
-Run [scripts/console.sh](../scripts/console.sh) poetry install
+Run [scripts/console.sh](scripts/console.sh)
 
-## If you need to relock:
+### If you need to relock:
 
 Run [scripts/lock.sh](../scripts/lock.sh)
 
-# Run code
+### Run code
 
-Run [scripts/console.sh](../scripts/console.sh) poetry run python -m docker_health_checks health-check
+Run [scripts/console.sh](../scripts/console.sh) uv run python -m docker_health_checks health-check
 
-# Building
+## Deployment
+
+### Building
 
 ```sh
 cd docker
 docker compose build --pull
 ```
 
-# Testing
+### Testing
 
 ```sh
 cd docker
@@ -32,13 +34,11 @@ docker compose up
 
 or
 
-# Test Docker Image
+### Test Docker Image
 
 ```sh
 docker run -it -v /var/run/docker.sock:/var/run/docker.sock rcolfin/docker-health-check:latest
 ```
-
-# Deployment
 
 ```yaml
 name: docker-health-check

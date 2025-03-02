@@ -1,6 +1,8 @@
-from collections.abc import Iterable
 from enum import Enum, EnumMeta
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 
 class _CaseInsensitiveEnumMeta(EnumMeta):
@@ -8,10 +10,10 @@ class _CaseInsensitiveEnumMeta(EnumMeta):
         try:
             return super().__call__(value, *args, **kwargs)
         except ValueError:
-            items = cast(Iterable[Enum], cls)
+            items = cast("Iterable[Enum]", cls)
             for item in items:
                 if item.name.casefold() == value.casefold():
-                    return cast(type[Enum], item)
+                    return cast("type[Enum]", item)
             raise
 
 
