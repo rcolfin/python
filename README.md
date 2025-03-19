@@ -5,14 +5,15 @@
 
 A Python monorepo that contains multiple Python packages.
 
-# Install Hooks
+## Install Hooks
+
+Run [scripts/console.sh](scripts/console.sh)
 
 ```sh
-scripts/console.sh
-pre-commit install
+uvx pre-commit install
 ```
 
-# Development
+## Development
 
 To bootstrap a package, cd into the directory and run:
 
