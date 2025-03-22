@@ -6,7 +6,6 @@ ARG PACKAGE="docker-health-check"
 
 ARG APPDIR="/application"
 
-
 # Setup uv
 
 ENV \
