@@ -13,6 +13,9 @@ services:
       tags:
         - rcolfin/metelsoft:docker-health-check
         - rcolfin/metelsoft:docker-health-check${TAG:+-${TAG}}
+      args:
+        BUILD_DATE: ${BUILD_DATE:-}
+        GIT_COMMIT: ${GIT_COMMIT:-unknown}
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

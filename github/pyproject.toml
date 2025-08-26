@@ -20,11 +20,11 @@ classifiers = [
 ]
 requires-python = "<4.0,>=3.12"
 dependencies = [
-    "aiohttp<4.0.0,>=3.11.10",
     "asyncclick<9.0.0.0,>=8.1.7.2",
     "backoff<3.0.0,>=2.2.1",
     "pyjwt<3.0.0,>=2.9.0",
     "cryptography<45.0.0,>=44.0.0",
+    "curl-cffi>=0.13.0",
 ]
 
 [dependency-groups]
