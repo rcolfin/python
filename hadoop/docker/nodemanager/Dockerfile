@@ -53,5 +53,5 @@ RUN \
     && echo 'source /usr/local/bin/_activate_current_env.sh' >> ~/.bashrc
 
 ENV \
-    GIT_COMMIT=${GIT_COMMIT} \
-    BUILD_TIMESTAMP=${BUILD_DATE}
+    GIT_COMMIT="${GIT_COMMIT}" \
+    BUILD_TIMESTAMP="${BUILD_DATE}"

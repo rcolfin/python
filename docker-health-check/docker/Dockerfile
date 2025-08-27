@@ -39,8 +39,8 @@ RUN \
     && rm -rf ./*
 
 ENV \
-    GIT_COMMIT=${GIT_COMMIT} \
-    BUILD_TIMESTAMP=${BUILD_DATE}
+    GIT_COMMIT="${GIT_COMMIT}" \
+    BUILD_TIMESTAMP="${BUILD_DATE}"
 
 ENTRYPOINT ["python", "-m", "docker_health_check", "health-check"]
 

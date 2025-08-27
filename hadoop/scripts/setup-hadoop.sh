@@ -87,6 +87,12 @@ function build_docker_hadoop() {
 
     log INFO "Running docker compose build from $PWD"
 
+    # shellcheck disable=SC2155
+    export BUILD_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+
+    # shellcheck disable=SC2155
+    export GIT_COMMIT="$(git rev-parse --short HEAD)"
+
     docker compose build --pull
 
     popd >/dev/null

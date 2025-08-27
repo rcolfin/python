@@ -84,3 +84,12 @@ B       C,D
 C       B,D
 D       B,C
 ```
+
+## Building Docker Image
+
+```sh
+export BUILD_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+export GIT_COMMIT="$(git rev-parse --short HEAD)"
+cd docker/nodemanager
+docker compose build --pull
+```
