@@ -21,6 +21,8 @@ Run [scripts/console.sh](../scripts/console.sh) uv run python -m docker_health_c
 ### Building
 
 ```sh
+export BUILD_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+export GIT_COMMIT="$(git rev-parse --short HEAD)"
 cd docker
 docker compose build --pull
 ```
