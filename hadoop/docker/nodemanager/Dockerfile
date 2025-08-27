@@ -27,6 +27,15 @@ RUN \
 
 FROM bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8 AS runtime
 
+ARG GIT_COMMIT="unknown"
+ARG BUILD_DATE=""
+ARG AUTHORS="rcolfin"
+
+LABEL \
+    org.opencontainers.image.revision=$GIT_COMMIT \
+    org.opencontainers.image.created=$BUILD_DATE \
+    org.opencontainers.image.authors=$AUTHORS
+
 ENV PATH=$PATH:/opt/conda/bin:/opt/conda/condabin \
     UV_NO_CACHE=1 \
     UV_PYTHON_INSTALL_DIR="/opt/conda/bin"\
@@ -43,6 +52,6 @@ RUN \
     /bin/micromamba shell init --shell bash \
     && echo 'source /usr/local/bin/_activate_current_env.sh' >> ~/.bashrc
 
-ARG BUILD_DATE=""
 ENV \
+    GIT_COMMIT=${GIT_COMMIT} \
     BUILD_TIMESTAMP=${BUILD_DATE}

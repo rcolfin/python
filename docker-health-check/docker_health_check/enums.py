@@ -6,7 +6,7 @@ if TYPE_CHECKING:
 
 
 class _CaseInsensitiveEnumMeta(EnumMeta):
-    def __call__(cls, value: str, *args: list[Any], **kwargs: Any) -> type[Enum]:  # noqa: ANN401
+    def __call__(cls, value: str, *args: Any, **kwargs: Any):  # type: ignore # noqa: ANN401 ANN204 PGH003
         try:
             return super().__call__(value, *args, **kwargs)
         except ValueError:

@@ -67,6 +67,9 @@ services:
       tags:
         - rcolfin/metelsoft:hadoop-nodemanager
         - rcolfin/metelsoft:hadoop-nodemanager${TAG:+-${TAG}}
+      args:
+        BUILD_DATE: ${BUILD_DATE:-}
+        GIT_COMMIT: ${GIT_COMMIT:-unknown}
     environment:
       SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 resourcemanager:8088"
     env_file:
