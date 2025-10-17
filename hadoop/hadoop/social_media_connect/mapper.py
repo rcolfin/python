@@ -2,8 +2,10 @@
 import itertools
 import sys
 from collections import defaultdict
-from collections.abc import Iterable
-from typing import Final, cast
+from typing import TYPE_CHECKING, Final, cast
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 EXPECTED_VALUES_PER_LINE: Final[int] = 2
 

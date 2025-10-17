@@ -77,7 +77,7 @@ class HttpClient:
     @asynccontextmanager
     async def _make_request(
         self, method: HTTPMethod, url: str, headers: dict[str, str], params: dict[str, Any] | None = None
-    ) -> AsyncGenerator[requests.models.Response, None]:
+    ) -> AsyncGenerator[requests.models.Response]:
         async with self._create_session() as session:
             response = await session.request(str(method), url, headers=headers, params=params)
             response.raise_for_status()

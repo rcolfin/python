@@ -1,10 +1,12 @@
 import asyncio
 import logging
-from collections.abc import AsyncIterable
 from http import HTTPMethod
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from github import httpclient, providers
+
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterable
 
 logger = logging.getLogger(__name__)
 

@@ -17,8 +17,9 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
-requires-python = "<4.0,>=3.12"
+requires-python = "<4.0,>=3.14"
 dependencies = [
     "asyncclick<9.0.0.0,>=8.1.7.2",
     "backoff<3.0.0,>=2.2.1",
@@ -68,7 +69,7 @@ exclude = [
 
 line-length = 120
 indent-width = 4
-target-version = "py39"
+target-version = "py314"
 
 [tool.ruff.lint]
 select = [
