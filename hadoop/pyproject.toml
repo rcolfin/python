@@ -17,8 +17,9 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
-requires-python = "<4.0,>=3.10"
+requires-python = "<4.0,>=3.14"
 dependencies = [
     "dask<2025.0.0,>=2024.8.2",
     "distributed<2025.0.0,>=2024.8.2",
@@ -72,7 +73,7 @@ exclude = [
 
 line-length = 120
 indent-width = 4
-target-version = "py39"
+target-version = "py314"
 
 [tool.ruff.lint]
 select = [

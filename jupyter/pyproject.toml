@@ -17,8 +17,9 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
-requires-python = "<4.0,>=3.12"
+requires-python = "<4.0,>=3.14"
 dependencies = [
     "jupyter<2.0.0,>=1.1.1",
     "pandas<3.0.0,>=2.2.2",
@@ -66,7 +67,7 @@ exclude = [
 
 line-length = 120
 indent-width = 4
-target-version = "py39"
+target-version = "py314"
 
 [tool.ruff.lint]
 select = [

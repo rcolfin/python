@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 import sys
-from collections.abc import Iterable
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 
 def main(lines: Iterable[str]) -> None:

@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 import sys
 from collections import defaultdict
-from collections.abc import Iterable
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 
 def reducer(lines: Iterable[str]) -> Iterable[tuple[str, tuple[str, ...]]]:
