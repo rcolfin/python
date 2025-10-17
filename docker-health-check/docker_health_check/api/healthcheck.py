@@ -7,9 +7,9 @@ from typing import TYPE_CHECKING, Any
 import anyio
 import backoff
 import requests
+from docker.client import DockerClient
 from tabulate import tabulate
 
-from docker.client import DockerClient
 from docker_health_check import __version__, constants, utils
 from docker_health_check.models import ContainerRow
 from docker_health_check.notifications import NotificationHub
