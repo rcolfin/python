@@ -1,6 +1,7 @@
 name: Publish Docker Image
 
 permissions:
+  actions: write
   contents: read
   checks: write
   id-token: write
