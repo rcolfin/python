@@ -6,8 +6,14 @@ from contextlib import asynccontextmanager
 from http import HTTPMethod, HTTPStatus
 from typing import TYPE_CHECKING, Any, Final, Self, cast
 
-import backoff
 from curl_cffi import requests
+from tenacity import (
+    retry,
+    retry_if_exception,
+    stop_after_attempt,
+    stop_after_delay,
+    wait_exponential,
+)
 
 from github import constants
 
@@ -68,11 +74,10 @@ class HttpClient:
         async with self._make_request(method, url, headers, params=params) as response:
             assert response.status_code == HTTPStatus.NO_CONTENT
 
-    @backoff.on_exception(
-        backoff.expo,
-        requests.exceptions.RequestException,
-        max_tries=constants.MAX_RETRIES,
-        max_time=constants.MAX_RETRY_TIME,
+    @retry(
+        retry=retry_if_exception(lambda ex: isinstance(ex, requests.exceptions.RequestException)),
+        wait=wait_exponential(),
+        stop=stop_after_attempt(constants.MAX_RETRIES) | stop_after_delay(constants.MAX_RETRY_TIME),
     )
     @asynccontextmanager
     async def _make_request(

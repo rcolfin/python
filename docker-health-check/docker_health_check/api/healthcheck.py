@@ -5,10 +5,15 @@ import traceback
 from typing import TYPE_CHECKING, Any
 
 import anyio
-import backoff
 import requests
 from docker.client import DockerClient
 from tabulate import tabulate
+from tenacity import (
+    retry,
+    retry_if_exception,
+    stop_after_attempt,
+    wait_exponential,
+)
 
 from docker_health_check import __version__, constants, utils
 from docker_health_check.models import ContainerRow
@@ -34,7 +39,11 @@ async def _restart(state: tuple[ContainerRow, NotificationHub]) -> None:
         notification_hub.enqueue(message)
 
 
-@backoff.on_exception(backoff.expo, requests.exceptions.RequestException, max_tries=constants.MAX_RETRY)
+@retry(
+    retry=retry_if_exception(lambda ex: isinstance(ex, requests.exceptions.RequestException)),
+    wait=wait_exponential(),
+    stop=stop_after_attempt(constants.MAX_RETRY),
+)
 def _get_containers(client: DockerClient, filters: dict[str, Any] | None) -> Iterable[ContainerRow]:
     containers = client.containers.list(filters=filters)
     return map(ContainerRow.from_container, containers)
