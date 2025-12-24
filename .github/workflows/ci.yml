@@ -79,7 +79,7 @@ jobs:
 
       - name: Run tests and collect coverage
         run: |
-          set -euox pipefail
+          set -euo pipefail
           PACKAGE=$(echo "$(basename $PWD)" | tr "-" "_")
           [ -d "${PACKAGE}" ] || PACKAGE="."
           uv run --frozen pytest --cov-report=xml:${{ github.workspace }}/build/coverage/${{ matrix.dirs }}.xml --cov="${PACKAGE}" --junitxml=${{ github.workspace }}/build/test-results/${{ matrix.dirs }}.xml
