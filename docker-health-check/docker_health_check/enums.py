@@ -1,4 +1,4 @@
-from enum import Enum, EnumMeta
+from enum import Enum, EnumMeta, StrEnum
 from typing import TYPE_CHECKING, Any, cast
 
 if TYPE_CHECKING:
@@ -17,19 +17,19 @@ class _CaseInsensitiveEnumMeta(EnumMeta):
             raise
 
 
-class ContainerStatus(str, Enum, metaclass=_CaseInsensitiveEnumMeta):
+class ContainerStatus(StrEnum, metaclass=_CaseInsensitiveEnumMeta):
     EXITED = "exited"
     PAUSED = "paused"
     RUNNING = "running"
     RESTARTING = "restarting"
 
 
-class HealthCheck(str, Enum, metaclass=_CaseInsensitiveEnumMeta):
+class HealthCheck(StrEnum, metaclass=_CaseInsensitiveEnumMeta):
     UNKNOWN = "unknown"
     HEALTHY = "healthy"
     UNHEALTHY = "unhealthy"
 
 
-class RestartStatus(str, Enum, metaclass=_CaseInsensitiveEnumMeta):
+class RestartStatus(StrEnum, metaclass=_CaseInsensitiveEnumMeta):
     SUCCESS = "success"
     FAILURE = "failure"
