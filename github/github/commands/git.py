@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import logging
-from pathlib import Path
 
 import asyncclick as click
+from anyio import Path
 
 import github
 from github.commands.common import cli
@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 @click.argument("signing-key", type=click.Path(exists=True, dir_okay=False))
 async def create_jwt(client_id: str, signing_key: str) -> None:
     async with github.providers.Application(
-        client_id=client_id, signing_key=Path(signing_key).read_bytes()
+        client_id=client_id, signing_key=await Path(signing_key).read_bytes()
     ) as provider:
         print(provider.generate_jwt())  # noqa: T201
 
@@ -26,7 +26,7 @@ async def create_jwt(client_id: str, signing_key: str) -> None:
 @click.argument("signing-key", type=click.Path(exists=True, dir_okay=False))
 async def get_app(client_id: str, signing_key: str) -> None:
     async with github.providers.Application(
-        client_id=client_id, signing_key=Path(signing_key).read_bytes()
+        client_id=client_id, signing_key=await Path(signing_key).read_bytes()
     ) as provider:
         print(await provider.get_app())  # noqa: T201
 
@@ -39,7 +39,7 @@ async def get_app_install_id(
     signing_key: str,
 ) -> None:
     async with github.providers.Application(
-        client_id=client_id, signing_key=Path(signing_key).read_bytes()
+        client_id=client_id, signing_key=await Path(signing_key).read_bytes()
     ) as provider:
         async for app_inst in provider.get_app_installations():
             print(app_inst)  # noqa: T201
@@ -50,7 +50,9 @@ async def get_app_install_id(
 @click.argument("signing-key", type=click.Path(exists=True, dir_okay=False))
 @click.argument("installation-id", type=str)
 async def get_access_token(client_id: str, signing_key: str, installation_id: str) -> None:
-    async with github.providers.Application(client_id, Path(signing_key).read_bytes(), installation_id) as provider:
+    async with github.providers.Application(
+        client_id, await Path(signing_key).read_bytes(), installation_id
+    ) as provider:
         print(await provider.access_token())  # noqa: T201
 
 
