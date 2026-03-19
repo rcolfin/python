@@ -21,8 +21,6 @@ classifiers = [
 ]
 requires-python = "<4.0,>=3.14"
 dependencies = [
-    "dask<2025.0.0,>=2024.8.2",
-    "distributed<2025.0.0,>=2024.8.2",
 ]
 
 [dependency-groups]
