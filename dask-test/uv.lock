@@ -120,7 +120,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "dask", specifier = ">=2026.0.0,<2027.0.0" },
-    { name = "distributed", specifier = ">=2026.0.0,<2027.0.0" },
+    { name = "distributed", specifier = ">=2026.1.0,<2027.0.0" },
 ]
 
 [package.metadata.requires-dev]
